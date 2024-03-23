@@ -1,11 +1,10 @@
-const { ObjectId } = require("mongodb");
 class BookService {
     constructor(client) {
-        this.Book = client.db().collection("books");
+        this.Book = client.db().collection("Books");
     }
     extractBookData(payload) {
         const book = {
-            _id: payload._id,
+            _id: payload.masach,
             tenSach: payload.tenSach,
             donGia: payload.donGia,
             soQuyen: payload.soQuyen,
@@ -20,12 +19,14 @@ class BookService {
     }
 
     async create(payload) {
-            const book = this.extractBookData(payload);
-            const result = await this.Book.insertOne(
-                book,
-                { returnDocument: "after", upsert: true },
-            );
-            return result;
+        const book = this.extractBookData(payload);
+        console.log(book);
+        const result = await this.Book.insertOne(
+            book,
+            { returnDocument: "after", upsert: true },
+        );
+        console.log(result);
+        return result;
     }
 
     async find(filter) {
