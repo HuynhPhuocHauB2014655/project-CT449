@@ -41,7 +41,7 @@ exports.login = async(req,res,next) => {
         console.log(req.body.password);
         if(!NV)
         {
-            return next(new ApiError(404, 'MSNV khong dung!'));
+            return next(new ApiError(404, 'MSNV không đúng!'));
         }
         else{
             const decryptedPassword = CryptoJS.AES.decrypt(NV.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString(CryptoJS.enc.Utf8);
@@ -52,7 +52,7 @@ exports.login = async(req,res,next) => {
             }
             else
             {
-                return next(new ApiError(404, 'Mat khau khong dung!'));
+                return next(new ApiError(404, 'Mật khẩu không đúng!'));
             }
         }
     }
@@ -86,3 +86,26 @@ exports.changePassword = async (req,res,next) => {
         );
     }
 }
+exports.findById = async (req,res,next) => {
+    const nhanVienService = new NhanVienService(MongoDB.client);
+    try
+    {
+        const nv = await nhanVienService.findById(req.params.id);
+        if(!nv)
+        {
+            return next (
+                new ApiError(405, "Nhan vien khong ton tai." )
+            );
+        }
+        else
+        {
+            return res.send(nv);
+        }
+    }
+    catch(error)
+    {
+        return next (
+            new ApiError(502, "Co loi khi tim kiem nhan vien." )
+        );
+    }
+} 

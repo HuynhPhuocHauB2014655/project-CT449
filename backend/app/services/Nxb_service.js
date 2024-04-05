@@ -29,7 +29,7 @@ class NxbService{
 
     async findByName(tenNxb) {
         return await this.Nxb.find({
-            tensach: { $regex: new RegExp(tenNxb), $options: "i" },
+            TenNxb: { $regex: new RegExp(tenNxb), $options: "i" },
         });
     }
 

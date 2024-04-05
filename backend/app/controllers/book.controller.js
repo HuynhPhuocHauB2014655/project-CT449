@@ -1,16 +1,24 @@
 const ApiError = require("../api-error");
 const MongoDB = require("../utils/mongodb.util");
 const BookService = require("../services/book.service");
-
+const NxbService = require("../services/Nxb_service");
+const NhanVienService = require("../services/nhanvien.service");
 exports.create = async (req, res, next) => {
     if (!req.body?.tenSach) {
         return next(new ApiError(400, "Khong co ten sach"));
     } 
 
     try {
+        const nxbService = new NxbService(MongoDB.client);
         const bookService = new BookService(MongoDB.client);
+        const maNxb = await nxbService.findById(req.body.maNxb);
+        if(!maNxb)
+        {
+            return next(
+                new ApiError(405, "Mã NXB không tồn tại.")
+            );
+        }
         const document = await bookService.create(req.body);
-        
         return res.send(document);
     } catch (error) {
         return next(
@@ -59,10 +67,17 @@ exports.update = async (req, res, next) => {
 
     try {
         const bookService = new BookService(MongoDB.client);
+        const nxbService = new NxbService(MongoDB.client);
         const document = await bookService.update(req.params.id, req.body);
-
         if(!document) {
             return next(new ApiError(404, 'Book not found'));
+        }
+        const maNxb = await nxbService.findById(req.body.maNxb);
+        if(!maNxb)
+        {
+            return next(
+                new ApiError(405, "Mã NXB không tồn tại.")
+            );
         }
         return res.send({message: "Book was update successfully"});
     } catch (error) {
