@@ -6,7 +6,7 @@ exports.create = async (req, res,next) => {
     try {
         const docGiaService = new DocGiaService(MongoDB.client);
         const isexits = await docGiaService.findById(req.body.maDocGia);
-        if (isexits != null) return next (new ApiError(409,'Tài khoản đã tồn tại'));
+        if (isexits != null) return next (new ApiError(409,'Mã đọc giả đã tồn tại'));
         const document = await docGiaService.create(req.body);
         return res.send(document);
     } catch (error) {
@@ -22,6 +22,15 @@ exports.update = async (req, res, next) => {
 
     try {
         const docGiaService = new DocGiaService(MongoDB.client);
+        if(req.body.oldPassword)
+        {
+            const password = await docGiaService.decryptPassword(req.params.id);
+
+            if(req.body.oldPassword != password)
+            {
+                return next(new ApiError(400, 'Mật khẩu không đúng'));
+            }
+        }
         const document = await docGiaService.update(req.params.id, req.body);
         if(!document) {
             return next(new ApiError(404, 'Doc gia khong ton tai'));
@@ -70,11 +79,11 @@ exports.changePassword = async (req,res,next) => {
     {
         const update = await docGiaService.updatePassword(maDocGia,req.body.newPassword);
         if(update){
-            return res.send(update);
+            return res.send("Cập nhật mật khẩu thành công!");
         }
         else{
             return next (
-                new ApiError(500, "CO loi khi doi mat khau!" )
+                new ApiError(500, "Co loi khi doi mat khau!" )
             );
         }
     }

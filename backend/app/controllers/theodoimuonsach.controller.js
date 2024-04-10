@@ -5,23 +5,13 @@ const BookService = require("../services/book.service");
 const DocGiaService = require("../services/docgia.service");
 exports.create = async (req, res, next) => {
     const muonSachService = new MuonSachService(MongoDB.client);
-    const bookService = new BookService(MongoDB.client);
     const docGiaService = new DocGiaService(MongoDB.client);
     try {
-        const book = await bookService.findById(req.body.maSach);
         const docgia = await docGiaService.findById(req.body.maDocGia);
-        if(!book || !docgia)
+        if(!docgia)
         {
             return next(
                 new ApiError(405, "Ma sach hoac ma doc gia khong ton tai.")
-            );
-        }
-        const temp = muonSachService.findById(book._id);
-        console.log(temp);
-        if(temp)
-        {
-            return next(
-                new ApiError(408, "Sach da duoc dang ki muon")
             );
         }
         const document = await muonSachService.create(req.body);

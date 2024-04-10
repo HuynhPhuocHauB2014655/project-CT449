@@ -56,12 +56,6 @@ const routes = [
         component: () => import("@/views/NV_Info.vue"),
         props: true
     },
-    {
-        path: "/password/:MSNV",
-        name: "change-password",
-        component: () => import("@/views/changePassword.vue"),
-        props: true
-    },
 
 ];
 const router = createRouter({

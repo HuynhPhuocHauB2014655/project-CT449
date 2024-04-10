@@ -1,40 +1,30 @@
 <template>
     <div class="row">
         <div class="col-md-10">
-            <SearchBook v-model="searchText"/>
+            <SearchBook v-model="searchText" />
         </div>
         <div class="mt-3 col-md-6">
             <h4>
                 Danh Sach Book
                 <i class="fas fa-book"></i>
             </h4>
-            <BookList
-                v-if="filteredBooksCount > 0"
-                :books="filteredBooks"
-                v-model:activeIndex="activeIndex"
-                @click="retrieveNxb(activeBook.maNxb)"
-            />
+            <BookList v-if="filteredBooksCount > 0" :books="filteredBooks" v-model:activeIndex="activeIndex"
+                @click="retrieveNxb(activeBook.maNxb)" />
             <p v-else>Không có sách nào.</p>
-            
-        
-        <!-- ----------------------------------------------------------------- -->
+
+
+            <!-- ----------------------------------------------------------------- -->
             <div class="mt-3 row agign-items-center">
                 <button class="btn col btn-sm btn-outline-primary me-2" @click="refreshList()">
                     <i class="fas fa-redo"></i> Làm mới
                 </button>
 
-                <button 
-                    class="btn btn-sm col btn-outline-success me-2"
-                    @click="goToAddBook"
-                >
+                <button class="btn btn-sm col btn-outline-success me-2" @click="goToAddBook">
                     <i class="fas fa-plus"></i> Thêm mới
                 </button>
 
-                <button
-                    class="btn btn-sm col btn-outline-danger"
-                    @click="removeAllBooks"
-                >
-                    <i class="fas fa-trash"></i>  Xóa tất cả
+                <button class="btn btn-sm col btn-outline-danger" @click="removeAllBooks">
+                    <i class="fas fa-trash"></i> Xóa tất cả
                 </button>
             </div>
         </div>
@@ -45,13 +35,11 @@
                     Thông tin chi tiết sách
                     <i class="fas fa-book"></i>
                 </h4>
-                <BookCard :book="activeBook" :tenNXB="tenNxb"/>
-                <router-link
-                    :to="{
-                        name: 'book-edit',
-                        params: { id: activeBook._id }
-                    }"
-                >
+                <BookCard :book="activeBook" :tenNXB="tenNxb" />
+                <router-link :to="{
+                    name: 'book-edit',
+                    params: { id: activeBook._id }
+                }">
                     <span class="mt-2">
                         <button class="btn btn-sm btn-outline-primary">
                             <i class="fas fa-edit"></i> Hiệu chỉnh
@@ -61,15 +49,15 @@
             </div>
         </div>
     </div>
- </template>
- <script>
+</template>
+<script>
 
- import BookList from "@/components/BookList.vue";
- import BookCard from "@/components/BookCard.vue";
- import BookService from "@/services/book.service";
- import SearchBook from "@/components/InputSearch.vue";
- import NxbService from "@/services/nxb.service";
- export default {
+import BookList from "@/components/BookList.vue";
+import BookCard from "@/components/BookCard.vue";
+import BookService from "@/services/book.service";
+import SearchBook from "@/components/InputSearch.vue";
+import NxbService from "@/services/nxb.service";
+export default {
     components: {
         SearchBook,
         BookList,
@@ -80,8 +68,9 @@
             books: [],
             activeIndex: -1,
             searchText: "",
-            nxb:[],
-            tenNxb:"",
+            nxb: [],
+            tenNxb: "",
+            userName: "",
         };
     },
     watch: {
@@ -92,19 +81,19 @@
     computed: {
         bookStrings() {
             return this.books.map((book) => {
-                const {tenSach} = book;
+                const { tenSach } = book;
                 return [tenSach].join();
             });
         },
-        filteredBooks() { 
-            if(!this.searchText){
+        filteredBooks() {
+            if (!this.searchText) {
                 return this.books;
             }
             return this.books.filter((_book, index) => {
                 return this.bookStrings[index].includes(this.searchText)
             });
 
-            
+
         },
         activeBook() {
             if (this.activeIndex < 0) {
@@ -113,13 +102,17 @@
             else {
                 return this.filteredBooks[this.activeIndex];
             }
-            
+
         },
 
         filteredBooksCount() {
             return this.filteredBooks.length;
-            
+
         },
+        getUserName() {
+            this.userName = sessionStorage.getItem('userName');
+            return this.userName;
+        }
     },
     methods: {
         async retrieveNxb(id) {
@@ -137,12 +130,11 @@
                 console.log(error);
             }
         },
-
         async removeAllBooks() {
-            if(confirm("Bạn muốn xóa tất cả Sach?")) {
+            if (confirm("Bạn muốn xóa tất cả Sach?")) {
                 try {
                     await BookService.deleteAll();
-                    this.refreshList;
+                    this.refreshList();
                 } catch (error) {
                     console.log(error);
                 }
@@ -159,8 +151,16 @@
         },
     },
     mounted() {
+        if (!this.getUserName) {
+            this.$router.replace({ name: "login" });
+        }
         this.refreshList();
+        if (localStorage.getItem('reloaded')) {
+            localStorage.removeItem('reloaded');
+        } else {
+            localStorage.setItem('reloaded', '1');
+            location.reload();
+        }
     },
- };
- </script>
-
+};
+</script>

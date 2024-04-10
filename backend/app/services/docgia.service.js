@@ -52,6 +52,10 @@ class DocGiaService {
             _id: id,
         };
         const update = this.extractdocgiaData(payload);
+        if(update.password)
+        {
+            update.password = CryptoJS.AES.encrypt(update.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString();
+        }
         const result = await this.DocGia.findOneAndUpdate(
             filter,
             { $set: update },
@@ -70,6 +74,11 @@ class DocGiaService {
     async deleteAll() {
         const result = await this.DocGia.deleteMany({});
         return result.deletedCount;
+    }
+    async decryptPassword(id){
+        const docgia = await this.DocGia.findOne({_id:id});
+        docgia.password = CryptoJS.AES.decrypt(docgia.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString(CryptoJS.enc.Utf8);
+        return docgia.password;
     }
 }
 module.exports = DocGiaService;

@@ -13,9 +13,6 @@ class NvService {
         return (await this.api.put(`/nv/${id}`, data)).data;
 
     }
-    async changePassword(id, data) {
-        return (await this.api.get(`/nv/${id}`, data)).data;
-    }
     async login(data) {
         return (await this.api.post(`/nv/login`, data)).data;
     }

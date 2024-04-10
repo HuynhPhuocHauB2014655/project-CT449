@@ -54,9 +54,6 @@ export default {
                     </tr>
                 </tbody>
             </table>
-            <router-link :to="{name: 'change-password', params: { MSNV: nv._id }}">
-                <button class="btn btn-sm btn-outline-primary me-2">Đổi mật khẩu</button>
-            </router-link>
         </div>
     </div>
 </template>

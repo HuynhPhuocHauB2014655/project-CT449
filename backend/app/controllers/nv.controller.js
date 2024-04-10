@@ -63,29 +63,6 @@ exports.login = async(req,res,next) => {
         );
     }
 }
-exports.changePassword = async (req,res,next) => {
-    const nhanVienService = new NhanVienService(MongoDB.client);
-    let MSNV = req.params.id;
-    const nv = await nhanVienService.findById(MSNV);
-    nv.password = CryptoJS.AES.decrypt(nv.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString(CryptoJS.enc.Utf8);
-    if(nv.password == req.body.oldPassword)
-    {
-        const update = await nhanVienService.updatePassword(MSNV,req.body.newPassword);
-        if(update){
-            return res.send(update);
-        }
-        else{
-            return next (
-                new ApiError(500, "Error when change password!" )
-            );
-        }
-    }
-    else{
-        return next (
-            new ApiError(405, "Password incorrect!" )
-        );
-    }
-}
 exports.findById = async (req,res,next) => {
     const nhanVienService = new NhanVienService(MongoDB.client);
     try

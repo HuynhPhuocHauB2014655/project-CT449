@@ -36,20 +36,6 @@ class NhanVienService {
             _id: id
         });
     }
-    async updatePassword(id, newPassword) {
-        const filter = {
-            _id: id,
-        };
-        newPassword = CryptoJS.AES.encrypt(newPassword, "Bookrentstore", { iv: "BookrentstoreIV" }).toString();
-        // const decrypted = CryptoJS.AES.decrypt(update.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString(CryptoJS.enc.Utf8);
-        // console.log(decrypted);
-        const result = await this.NV.findOneAndUpdate(
-            filter,
-            { $set: {password:newPassword} },
-            { returnDocument: "after" }
-        );
-        return result;
-    }
     async update(id, payload) {
         const filter = {
             _id: id,

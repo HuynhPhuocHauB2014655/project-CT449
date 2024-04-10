@@ -5,11 +5,10 @@ class MuonSachService{
     }
     extractData(payload){
         const data = {
-            _id: crypto.randomBytes(10).toString('hex'),
             maDocGia:payload.maDocGia,
             maSach: payload.maSach,
             ngayMuon: payload.ngayMuon,
-            ngayTra: Date(payload.ngayTra)
+            ngayTra: payload.ngayTra
         }
         Object.keys(data).forEach(
             (key) => data[key] === undefined && delete data[key]
@@ -30,16 +29,11 @@ class MuonSachService{
             return await cursor.toArray();
         }
 
-    async findByName(tenNxb) {
-        return await this.Data.find({
-            tensach: { $regex: new RegExp(tenNxb), $options: "i" },
-        });
-    }
 
     async findById(id) {
-        return await this.Data.findOne({
-            _id: id
-        });
+        return await this.Data.find({
+            maDocGia: id,
+        }).toArray();
     }
     async update(id, payload) {
         const filter = {

@@ -31,12 +31,7 @@
 import * as yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import NvService from "@/services/nv.service";
-import {useUser} from "@/stores/main.vue";
 export default {
-    setup(){
-        const mainUser = useUser();
-        return {mainUser};
-    },
     components: {
         Form,
         Field,
@@ -69,12 +64,15 @@ export default {
         async login(){
             try {
                     const user = await NvService.login(this.User);
-                    this.mainUser.setUsername(user);
-                    this.$router.replace({path: "/"});
+                    sessionStorage.setItem('userName', user);
+                    this.$router.replace({name: "homeBook"});
                 } catch (error) {
                     this.message = error.response.data.message;
                 }
         },
-    }
+    },
+    // mounted(){
+    //     sessionStorage.setItem("reloaded",false);
+    // }
 }
 </script>

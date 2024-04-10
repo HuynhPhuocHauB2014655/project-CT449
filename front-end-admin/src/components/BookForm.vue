@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label for="soquyen">Số Quyển:</label>
-                <Field name="soquyen" type="text" class="form-control" v-model="bookLocal.soQuyen" />
+                <Field name="soquyen" type="number" inputmode="numberic" class="form-control" v-model="bookLocal.soQuyen" />
                 <ErrorMessage name="soquyen" class="error-feedback" />
             </div>
         </div>
@@ -120,7 +120,7 @@ export default {
                 .required("Đơn giá không được bỏ trống."),
             soquyen: yup
                 .string()
-                .matches(/^[1-9][0-9]*$/, "Số quyển không hợp lệ")
+                .matches(/^[0-9][0-9]*$/, "Số quyển không hợp lệ")
                 .required("Số quyển không được bỏ trống.")
                 .max(3, "Số quyển có nhiều nhất 3 ký tự."),
             namxuatban: yup
