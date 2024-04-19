@@ -22,6 +22,15 @@ exports.update = async (req, res, next) => {
 
     try {
         const nhanVienService = new NhanVienService(MongoDB.client);
+        if(req.body.oldPassword)
+        {
+            const password = await nhanVienService.decryptPassword(req.params.id);
+
+            if(req.body.oldPassword != password)
+            {
+                return next(new ApiError(400, 'Mật khẩu không đúng'));
+            }
+        }
         const document = await nhanVienService.update(req.params.id, req.body);
         if(!document) {
             return next(new ApiError(404, 'Nhan vien not found'));
@@ -38,14 +47,13 @@ exports.login = async(req,res,next) => {
     {
         const nhanVienService = new NhanVienService(MongoDB.client);
         const NV = await nhanVienService.findById(req.body.MSNV);
-        console.log(req.body.password);
+
         if(!NV)
         {
             return next(new ApiError(404, 'MSNV không đúng!'));
         }
         else{
             const decryptedPassword = CryptoJS.AES.decrypt(NV.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString(CryptoJS.enc.Utf8);
-            console.log(decryptedPassword);
             if(decryptedPassword === req.body.password)
             {
                 return res.send(NV._id);

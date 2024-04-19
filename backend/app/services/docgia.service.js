@@ -35,6 +35,9 @@ class DocGiaService {
             _id: id
         });
     }
+    async find() {
+        return await this.DocGia.find({}).toArray();
+    }
     async updatePassword(id, newPassword) {
         const filter = {
             _id: id,

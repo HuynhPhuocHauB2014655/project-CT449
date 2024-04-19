@@ -70,27 +70,13 @@ exports.login = async(req,res,next) => {
         );
     }
 }
-exports.changePassword = async (req,res,next) => {
+exports.find = async (req,res,next) => {
     const docGiaService = new DocGiaService(MongoDB.client);
-    let maDocGia = req.params.id;
-    const docgia = await docGiaService.findById(maDocGia);
-    docgia.password = CryptoJS.AES.decrypt(docgia.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString(CryptoJS.enc.Utf8);
-    if(docgia.password == req.body.oldPassword)
-    {
-        const update = await docGiaService.updatePassword(maDocGia,req.body.newPassword);
-        if(update){
-            return res.send("Cập nhật mật khẩu thành công!");
-        }
-        else{
-            return next (
-                new ApiError(500, "Co loi khi doi mat khau!" )
-            );
-        }
-    }
-    else{
-        return next (
-            new ApiError(405, "mat khau cu khong dung!" )
-        );
+    try{
+        let docs =  await docGiaService.find();
+        return res.send(docs);
+    }catch(error){
+        return next(new ApiError(500,"Lay danh sach doc Gia that bai"));
     }
 }
 exports.findById = async (req,res,next) => {

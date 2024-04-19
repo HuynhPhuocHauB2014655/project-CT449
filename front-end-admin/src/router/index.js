@@ -56,6 +56,16 @@ const routes = [
         component: () => import("@/views/NV_Info.vue"),
         props: true
     },
+    {
+        path: "/rent-book/",
+        name: "rent-book",
+        component: () => import("@/views/BookRent.vue"),
+    },
+    {
+        path: "/rent/",
+        name: "rent",
+        component: () => import("@/views/Rent.vue"),
+    },
 
 ];
 const router = createRouter({

@@ -9,6 +9,9 @@ class RentBookService {
     async get(id) {
         return (await this.api.get(`/muonsach/find/${id}`)).data;
     }
+    async getAll(){
+        return (await this.api.get('/muonsach/find')).data;
+    }
     async update(id, data) {
         return await this.api.put(`/muonsach/${id}`, data).data;
     }

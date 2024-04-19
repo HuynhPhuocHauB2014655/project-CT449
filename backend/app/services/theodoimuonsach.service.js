@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+const { ObjectId } = require("mongodb");
 class MuonSachService{
     constructor(client) {
         this.Data= client.db().collection("TheoDoiMuonSach");
@@ -8,7 +8,8 @@ class MuonSachService{
             maDocGia:payload.maDocGia,
             maSach: payload.maSach,
             ngayMuon: payload.ngayMuon,
-            ngayTra: payload.ngayTra
+            ngayTra: payload.ngayTra,
+            trangThai: payload.trangThai
         }
         Object.keys(data).forEach(
             (key) => data[key] === undefined && delete data[key]
@@ -37,7 +38,7 @@ class MuonSachService{
     }
     async update(id, payload) {
         const filter = {
-            _id: id,
+            _id:  ObjectId.isValid(id) ? new  ObjectId(id) : null,
         };
         const update = this.extractData(payload);
         const result = await this.Data.findOneAndUpdate(
@@ -50,7 +51,7 @@ class MuonSachService{
 
     async delete(id) {
         const result = await this.Data.findOneAndDelete({
-            _id: id,
+            maDocGia: id,
         });
         return result;
     }

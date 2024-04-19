@@ -71,8 +71,5 @@ export default {
                 }
         },
     },
-    // mounted(){
-    //     sessionStorage.setItem("reloaded",false);
-    // }
 }
 </script>

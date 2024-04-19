@@ -37,6 +37,7 @@ export default {
                 maSach: "",
                 ngayMuon: new Date().toISOString().substr(0, 10),
                 ngayTra: "",
+                trangThai:0
             },
             showRentBook:false,
         }
@@ -81,13 +82,13 @@ export default {
         }
     },
     mounted() {
-        this.getBook();
         if (localStorage.getItem('reloaded')) {
             localStorage.removeItem('reloaded');
         } else {
             localStorage.setItem('reloaded', '1');
             location.reload();
         }
+        this.getBook();
     }
 }
 </script>

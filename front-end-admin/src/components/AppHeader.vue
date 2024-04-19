@@ -1,16 +1,21 @@
 <template>
     <div class="navbar navbar-expand px-3 bg-info row">
-        <div class="col-sm-2"><a href="/" class="navbar-brand">Ứng dụng Quản lý mượn sách</a></div>
+        <div class="col-sm-1"><a href="/" class="navbar-brand">Book Land</a></div>
         <div class="col-sm">
-            <ul class="nav ms-5">
+            <ul v-if="getUserName" class="nav">
                 <li class="nav-item">
-                    <router-link :to="{ name: 'homeBook' }" class="nav-link text-dark">
-                        Danh sách Book
+                    <router-link :to="{ name: 'rent-book' }" class="nav-link text-dark">
+                        Danh sách mượn
                     </router-link>
                 </li>
                 <li class="nav-item">
                     <router-link :to="{ name: 'nxbview' }" class="nav-link text-dark">
                         Nhà Xuất Bản
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link :to="{ name: 'rent' }" class="nav-link text-dark">
+                        Đăng kí mượn
                     </router-link>
                 </li>
             </ul>
@@ -37,9 +42,6 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link text-dark" @click="logout">Đăng xuất</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Giỏ hàng</a>
-                </li>
             </ul>
         </div>
     </div>
@@ -61,6 +63,7 @@ export default {
         logout() {
             if (confirm('Bạn có chắc muốn đăng xuất không?')) {
                 sessionStorage.setItem("userName","");
+                localStorage.removeItem('reloaded');
                 this.userName = "";
                 window.location.reload();
             }

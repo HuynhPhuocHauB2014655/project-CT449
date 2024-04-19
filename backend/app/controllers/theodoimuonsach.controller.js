@@ -27,16 +27,11 @@ exports.findAll = async (req, res, next) => {
     let documents = [];
     try {
         const muonSachService = new MuonSachService(MongoDB.client);
-        const { filter } = req.query;
-        if (filter) {
-            documents = await muonSachService.findByName(filter);
-        } else {
-            documents = await muonSachService.find({});
-        }
+        documents = await muonSachService.find({});
         return res.send(documents);
     } catch (error) {
         return next(
-            new  ApiError(500, "An error occurred while retrieving nxb")
+            new  ApiError(500, "Error")
         );
     }
 };
@@ -92,7 +87,7 @@ exports.delete = async (req, res, next) => {
         if (!document) {
             return next(new ApiError(404, 'Not found'));
         }
-        return res.send({message: "Da xoa thanh cong"});
+        return res.send({message: "Đx xóa thành công."});
     } catch (error) {
         return next(new ApiError(500, `Co loi khi xoa id= ${req.params.id}`));
     }

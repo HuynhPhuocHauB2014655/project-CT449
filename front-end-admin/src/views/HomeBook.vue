@@ -1,8 +1,8 @@
 <template>
+    <div class="w-50">
+        <SearchBook v-model="searchText" />
+    </div>
     <div class="row">
-        <div class="col-md-10">
-            <SearchBook v-model="searchText" />
-        </div>
         <div class="mt-3 col-md-6">
             <h4>
                 Danh Sach Book
@@ -82,7 +82,7 @@ export default {
         bookStrings() {
             return this.books.map((book) => {
                 const { tenSach } = book;
-                return [tenSach].join();
+                return [this.removeAccents(tenSach)].join().toLowerCase();
             });
         },
         filteredBooks() {
@@ -115,6 +115,11 @@ export default {
         }
     },
     methods: {
+        removeAccents(string){
+            return string.normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+        },
         async retrieveNxb(id) {
             try {
                 this.nxb = await NxbService.get(id);
@@ -151,16 +156,16 @@ export default {
         },
     },
     mounted() {
-        if (!this.getUserName) {
-            this.$router.replace({ name: "login" });
-        }
-        this.refreshList();
         if (localStorage.getItem('reloaded')) {
             localStorage.removeItem('reloaded');
         } else {
             localStorage.setItem('reloaded', '1');
             location.reload();
         }
+        if (!this.getUserName) {
+            this.$router.replace({ name: "login" });
+        }
+        this.refreshList();
     },
 };
 </script>

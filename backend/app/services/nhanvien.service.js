@@ -22,8 +22,6 @@ class NhanVienService {
         const nv = this.extractNvData(payload);
         const encrypted = CryptoJS.AES.encrypt(nv.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString();
         nv.password = encrypted;
-        // const decrypted = CryptoJS.AES.decrypt(encrypted, "Bookrentstore", { iv: "BookrentstoreIV" }).toString(CryptoJS.enc.Utf8);
-        // console.log(decrypted);
         const result = await this.NV.insertOne(
             nv,
             { returnDocument: "after", upsert: true },
@@ -41,6 +39,10 @@ class NhanVienService {
             _id: id,
         };
         const update = this.extractNvData(payload);
+        if(update.password)
+        {
+            update.password = CryptoJS.AES.encrypt(update.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString();
+        }
         const result = await this.NV.findOneAndUpdate(
             filter,
             { $set: update },
@@ -59,6 +61,11 @@ class NhanVienService {
     async deleteAll() {
         const result = await this.NV.deleteMany({});
         return result.deletedCount;
+    }
+    async decryptPassword(id){
+        const nv = await this.NV.findOne({_id:id});
+        nv.password = CryptoJS.AES.decrypt(nv.password, "Bookrentstore", { iv: "BookrentstoreIV" }).toString(CryptoJS.enc.Utf8);
+        return nv.password;
     }
 }
 module.exports = NhanVienService;

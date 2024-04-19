@@ -54,6 +54,7 @@ export default {
         logout() {
             if (confirm('Bạn có chắc muốn đăng xuất không?')) {
                 sessionStorage.removeItem("userName");
+                localStorage.removeItem('reloaded');
                 this.userName = "";
                 window.location.reload();
             }

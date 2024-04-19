@@ -8,10 +8,17 @@ export default {
 </script>
 
 <template>
-    <div id="app">
+    <div id="container">
         <AppHeader />
         <div class="container mt-3">
             <router-view />
         </div>
     </div>
 </template>
+<style scoped>
+#container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+</style>

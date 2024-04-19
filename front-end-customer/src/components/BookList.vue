@@ -24,7 +24,6 @@ export default {
     methods: {
         showBook(bookIndex) {
             if (this.bookIndex == bookIndex) {
-                // If the clicked item is already active, remove the active state
                 this.bookIndex = -1;
                 this.$emit("show:book", this.bookIndex);
             } else {
