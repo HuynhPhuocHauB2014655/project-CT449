@@ -90,7 +90,7 @@ export default {
                 return this.books;
             }
             return this.books.filter((_book, index) => {
-                return this.bookStrings[index].includes(this.searchText)
+                return this.bookStrings[index].includes(this.removeAccents(this.searchText).toLowerCase())
             });
 
 
