@@ -31,6 +31,7 @@ export default {
             try {
                 await NxbService.create(data);
                 alert("Thêm nhà xuất bản thành công");
+                this.$router.push({ name: 'nxbview' });
             } catch (error) {
                 console.log(error);
             }

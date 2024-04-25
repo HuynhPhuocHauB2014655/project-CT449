@@ -48,6 +48,7 @@ export default {
             try {
                 await BookService.update(this.book._id, data);
                 alert("Chỉnh sửa sách thành công");
+                this.$router.push({ name: 'homeBook' });
             } catch (error) {
                 this.message = error.response.data.message;
             }

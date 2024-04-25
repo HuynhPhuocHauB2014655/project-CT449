@@ -49,6 +49,7 @@ export default {
             try {
                 await NxbService.update(this.nxb._id, data);
                 alert("Chỉnh sửa nhà xuất bản thành công");
+                this.$router.push({ name: 'nxbview' });
             } catch (error) {
                 this.message = error.response.data.message;
             }
@@ -59,7 +60,7 @@ export default {
                 try {
                     await NxbService.delete(this.book._id);
                     alert("Xóa nhà xuất bản thành công");
-                    this.$router.push({ name: "homeBook" });
+                    this.$router.push({ name: 'nxbview' });
                 } catch (error) {
                     this.message = error.response.data.message;
                 }

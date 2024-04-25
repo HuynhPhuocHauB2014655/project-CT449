@@ -64,6 +64,7 @@ export default {
     },
     methods:{
         async login(){
+            localStorage.removeItem('reloaded');
             try {
                     const user = await DocGiaService.login(this.docGia);
                     sessionStorage.setItem('userName', user);

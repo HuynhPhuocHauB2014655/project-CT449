@@ -18,7 +18,7 @@
         </div>
         <div class="form-group my-2">
             <button class="btn btn-primary"><i class="fa-solid fa-book"></i> Lưu</button>
-            <button v-if="type == 'edit'" type="button" class="ml-2 btn btn-danger" @click="deleteNxb">
+            <button v-if="type == 'edit'" type="button" class="ms-2 btn btn-danger" @click="deleteNxb">
                 <i class="fas fa-trash"></i> Xóa
             </button>
         </div>

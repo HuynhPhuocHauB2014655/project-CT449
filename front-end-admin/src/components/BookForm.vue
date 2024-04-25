@@ -49,7 +49,7 @@
         </div>
         <div class="form-group mt-3">
             <button class="btn btn-primary"><i class="fa-solid fa-book"></i> Lưu</button>
-            <button v-if="type == 'edit'" type="button" class="ml-2 btn btn-danger" @click="deleteBook">
+            <button v-if="type == 'edit'" type="button" class="ms-2 btn btn-danger" @click="deleteBook">
                 <i class="fas fa-trash"></i> Xóa
             </button>
         </div>
@@ -75,9 +75,9 @@
                             <td>{{ nxb.tenNxb }}</td>
                             <td>
                                 <router-link :to="{name: 'nxb-edit', params: { id: nxb._id }}">
-                                    <button class="btn btn-sm btn-outline-primary me-2">Sửa NXB</button>
+                                    <button class="btn btn-sm btn-outline-primary">Sửa NXB</button>
                                 </router-link>
-                                <button class="btn btn-sm btn-outline-danger" @click=deleteNXB(nxb._id)>Xóa</button>
+                                <button class="btn btn-sm btn-outline-danger ms-2" @click=deleteNXB(nxb._id)>Xóa</button>
                             </td>
 
                         </tr>
